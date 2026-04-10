@@ -1038,7 +1038,7 @@
   <!-- Floating Nav -->
   <nav class="nav" id="nav">
     <a href="#work">What I Do</a>
-    <a href="#work-projects">Projects</a>
+    <a href="#selected-projects">Projects</a>
     <a href="#experience">Experience</a>
     <a href="#stack">Stack</a>
     <a href="#contact">Contact</a>
@@ -1145,95 +1145,6 @@
     </div>
   </section>
 
-  <!-- Selected Work -->
-  <section id="work-projects" style="background: var(--bg-subtle); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="section-label">Selected Work</div>
-        <div class="section-title">Things I've <span class="serif">actually built.</span></div>
-      </div>
-      <div class="project-cards">
-
-        <div class="project-card reveal">
-          <div class="project-top">
-            <h3>AI-Powered Listing Platform</h3>
-            <span class="project-metric">2hrs → 15min</span>
-          </div>
-          <p class="project-desc">A SaaS tool for real estate agencies that turns raw property photos into polished listings. AI generates descriptions in multiple tones (luxury, family, investment), creates cinematic video tours from photos, and builds ready-to-share landing pages.</p>
-          <div class="project-stack">
-            <span class="project-tag">Next.js</span>
-            <span class="project-tag">Supabase</span>
-            <span class="project-tag">Claude API</span>
-            <span class="project-tag">TypeScript</span>
-            <span class="project-tag">Tailwind</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-top">
-            <h3>Natural Language Property Search</h3>
-            <span class="project-metric">+35% lead qualification</span>
-          </div>
-          <p class="project-desc">A chatbot where users type things like "villa in Moraira with pool under 800k" and get matching results. Built on a RAG pipeline: Claude extracts filters, embeddings go through Pinecone for semantic search, then Claude writes a conversational response. Bilingual, with follow-up support ("show me cheaper ones").</p>
-          <div class="project-stack">
-            <span class="project-tag">Next.js</span>
-            <span class="project-tag">FastAPI</span>
-            <span class="project-tag">Pinecone</span>
-            <span class="project-tag">Claude</span>
-            <span class="project-tag">Python</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-top">
-            <h3>AI Inside Sales Agent</h3>
-          </div>
-          <p class="project-desc">Goes beyond search. This agent qualifies leads, analyzes property photos with Claude's vision, captures contact info and preferences from the conversation, and books viewings by managing calendar slots. Intent detection routes the conversation so it feels natural, not scripted.</p>
-          <div class="project-stack">
-            <span class="project-tag">Python</span>
-            <span class="project-tag">ChromaDB</span>
-            <span class="project-tag">Claude Vision</span>
-            <span class="project-tag">FastAPI</span>
-            <span class="project-tag">PostgreSQL</span>
-            <span class="project-tag">Vercel</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-top">
-            <h3>Energy Bill Savings Agents</h3>
-            <span class="project-metric">470+ bills analysed</span>
-          </div>
-          <p class="project-desc">A multi-agent system that helps users save on their electricity bills. One agent extracts key info (name, address, PDL number) from uploaded bills using Mistral OCR. A second one pulls real consumption data from the Enedis API. A third analyzes everything - bills, contract, provider - and gives personalized recommendations to cut costs.</p>
-          <div class="project-stack">
-            <span class="project-tag">Claude</span>
-            <span class="project-tag">Mistral OCR</span>
-            <span class="project-tag">Enedis API</span>
-            <span class="project-tag">Python</span>
-            <span class="project-tag">FastAPI</span>
-            <span class="project-tag">Next.js</span>
-          </div>
-        </div>
-
-        <div class="project-card reveal">
-          <div class="project-top">
-            <h3>AI Dating Platform (US Market)</h3>
-            <span class="project-metric">120K → 380K MAU</span>
-          </div>
-          <p class="project-desc">Built and launched a dating app with GPT-2 powered chatbots, fine-tuned with data scientists on dating conversations to feel natural and keep users engaged. Designed a coin-based economy where users purchase credits to unlock actions, plus a full gamification layer (streaks, rewards, levels) that drove retention and repeat purchases.</p>
-          <div class="project-stack">
-            <span class="project-tag">GPT-2</span>
-            <span class="project-tag">Python</span>
-            <span class="project-tag">NLP Fine-tuning</span>
-            <span class="project-tag">Monetization</span>
-            <span class="project-tag">Gamification</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <!-- Experience -->
   <section id="experience">
     <div class="container">
@@ -1334,17 +1245,20 @@
           <a href="projects/natural-language-search.html" class="project-view-link">View project →</a>
         </div>
 
-        <!-- Card 2: Placeholder -->
-        <div class="project-card showcase-card reveal project-placeholder">
+        <!-- Card 2: Energy Bill Savings Agent -->
+        <div class="project-card showcase-card reveal">
           <div class="showcase-metric">
-            <span class="showcase-value">—</span>
+            <span class="showcase-value">28%</span>
+            <span class="showcase-label">switch rate</span>
           </div>
-          <h3>Project 2</h3>
-          <p class="project-desc">Coming soon.</p>
+          <h3>Energy Bill Savings Agent</h3>
+          <p class="project-desc">Three-agent pipeline — OCR extraction, Enedis consumption data, personalised switching recommendations — saving users €38/month on average.</p>
           <div class="project-stack">
             <span class="project-tag">AI Product</span>
+            <span class="project-tag">Multi-Agent</span>
+            <span class="project-tag">French Energy Market</span>
           </div>
-          <span class="project-view-link project-view-disabled">View project →</span>
+          <a href="projects/energy-bill-agent.html" class="project-view-link">View project →</a>
         </div>
 
         <!-- Card 3: Placeholder -->
