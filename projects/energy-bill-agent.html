@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Bill Savings Agent — Louis Duquesne</title>
+  <meta name="description" content="A three-agent pipeline that extracts bill data via OCR, fetches verified consumption from Enedis, and generates personalized switching recommendations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050505;
+      --surface: #0f0f0f;
+      --surface-2: #161616;
+      --border: rgba(255,255,255,0.07);
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45,212,191,0.12);
+      --purple: #a78bfa;
+      --text: #e8e8e8;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --font-sans: 'Inter', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5,5,5,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-logo:hover { color: var(--teal); }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--teal); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .tag-teal {
+      border-color: rgba(45,212,191,0.3);
+      color: var(--teal);
+      background: var(--teal-dim);
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-value-prop {
+      font-size: 1.125rem;
+      color: var(--text-dim);
+      max-width: 640px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .hero-attrs {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .attr { display: flex; flex-direction: column; gap: 0.2rem; }
+    .attr-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .attr-value { font-size: 0.9rem; color: var(--text-dim); }
+
+    .metrics-bar {
+      max-width: 860px;
+      margin: 0 auto 5rem;
+      padding: 0 2rem;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .metric {
+      background: var(--surface);
+      padding: 1.75rem;
+      text-align: center;
+    }
+    .metric-value {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .metric-label { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    .section { margin-bottom: 4rem; padding-top: 1rem; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-number {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--teal);
+      text-transform: uppercase;
+      min-width: 28px;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    .subsection { margin-bottom: 1.75rem; }
+    .subsection-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    p { color: var(--text-dim); font-size: 0.9375rem; line-height: 1.75; }
+    p + p { margin-top: 0.75rem; }
+
+    .highlight {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .highlight p { color: var(--text); font-size: 0.9375rem; }
+    .highlight .label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+    .stack-item { background: var(--surface); padding: 1.25rem; }
+    .stack-item-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .stack-item-value { font-size: 0.875rem; color: var(--text-dim); line-height: 1.5; }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .pipeline-step { background: var(--surface); padding: 1.5rem; }
+    .pipeline-step-num {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .pipeline-step-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .pipeline-step-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.5; }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .outcome-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .outcome-card.full { grid-column: 1 / -1; }
+    .outcome-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .insight-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .insight-card-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 0.5rem;
+    }
+
+    ul.bullet-list { list-style: none; padding: 0; margin-top: 0.5rem; }
+    ul.bullet-list li {
+      padding: 0.35rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+      font-size: 0.9375rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+    }
+    ul.bullet-list li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--teal);
+      font-size: 1rem;
+    }
+
+    .placeholder-note {
+      display: inline-block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(167,139,250,0.08);
+      border: 1px dashed rgba(167,139,250,0.3);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 860px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+    .footer-text { font-size: 0.8125rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .pipeline { grid-template-columns: 1fr; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .content { padding: 0 1.25rem 4rem; }
+      .metrics-bar { padding: 0 1.25rem; margin-bottom: 3rem; }
+      footer { padding: 2rem 1.25rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Louis Duquesne</a>
+    <a href="/projects/" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      All projects
+    </a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-meta">
+      <span class="tag tag-teal">AI Product</span>
+      <span class="tag">Multi-Agent</span>
+      <span class="tag">French Energy Market</span>
+    </div>
+    <h1>Energy Bill Savings Agent: Automated Multi-Agent Analysis for French Households</h1>
+    <p class="hero-value-prop">
+      French households overpay on electricity contracts because comparison tools rely on manual entry and consumption estimates. A three-agent pipeline replaced that with OCR extraction, verified Enedis consumption data, and personalized switching recommendations.
+    </p>
+    <div class="hero-attrs">
+      <div class="attr">
+        <span class="attr-label">Role</span>
+        <span class="attr-value">Product Manager</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Team</span>
+        <span class="attr-value">3 people (2 devs, 1 designer)</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Timeline</span>
+        <span class="attr-value">3-month MVP</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Market</span>
+        <span class="attr-value">France</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Status</span>
+        <span class="attr-value">Production</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics-bar">
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-value">470+</div>
+        <div class="metric-label">Unique users</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">82%</div>
+        <div class="metric-label">Upload-to-recommendation rate</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">28%</div>
+        <div class="metric-label">Switch rate among users who received a recommendation</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">€38</div>
+        <div class="metric-label">Average monthly saving per switcher</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="content">
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Executive Summary</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Problem</div>
+        <p>French households overpay on electricity contracts due to opaque billing and no easy way to match real consumption against available market offers. Existing comparison tools require manual data entry and rely on consumption estimates — users input guesses, get generic outputs they don't trust.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Solution</div>
+        <p>A three-agent pipeline that extracts bill data via OCR, fetches verified consumption data directly from Enedis, and generates personalized switching recommendations grounded in the user's actual usage profile.</p>
+      </div>
+      <div class="highlight">
+        <div class="label">Bottom Line</div>
+        <p>28% of users who received a recommendation switched provider, saving an average of €38/month — more than double the market baseline of ~€214/year for a typical household switching from EDF Tarif Bleu.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">The Pain Point</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Market Reality</div>
+        <p>Existing French comparison platforms (HelloWatt, JeanMarcMorin) require manual data entry and rely on consumption estimates. Users input guesses, receive generic outputs, and don't trust the result enough to act. The information asymmetry between suppliers and households is structural — bills are intentionally complex, and switching friction is high.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Cost of Inaction</div>
+        <p>Switching from EDF Tarif Bleu to the cheapest available offer saves an average household approximately €214/year on standard consumption (4,770 kWh). Most never switch. The problem is not lack of alternatives — it's lack of a trustworthy, low-effort path to act on them.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Why AI, Not Heuristics</div>
+        <p>Bill formats vary across providers and change over time. A rules-based extractor breaks on layout updates. Mistral OCR with a structured extraction prompt handles format heterogeneity without per-provider maintenance. The recommendation layer must reason across contract type, consumption profile, and live market offers simultaneously — not reducible to a decision tree.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Tech Stack</h2>
+      </div>
+      <p>No fine-tuning. Prompt engineering with strict output schemas, real consumption data over proxies, and async architecture to handle the Enedis API bottleneck.</p>
+      <div class="stack-grid">
+        <div class="stack-item">
+          <div class="stack-item-label">OCR / Extraction</div>
+          <div class="stack-item-value">Mistral OCR — PDF bill extraction across provider formats</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Analysis & Recommendations</div>
+          <div class="stack-item-value">Claude (Anthropic) — consumption analysis and recommendation generation</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Consumption Data</div>
+          <div class="stack-item-value">Enedis API — verified consumption via PDL number. User self-reporting explicitly ruled out.</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Backend</div>
+          <div class="stack-item-value">FastAPI (Python) — async pipeline with explicit loading states</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Frontend</div>
+          <div class="stack-item-value">Next.js — bill upload, extraction review, recommendation card</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Data Strategy</div>
+          <div class="stack-item-value">Strict JSON output schemas for extraction reliability. Real data over estimates — deliberate given the financial stakes.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2 class="section-title">Solution & PM Strategy</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Three-Agent Pipeline</div>
+        <div class="pipeline">
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">Agent 1</div>
+            <div class="pipeline-step-title">Bill Extraction</div>
+            <div class="pipeline-step-desc">Mistral OCR parses the uploaded PDF. Outputs a strict JSON schema. Fields below confidence threshold trigger a user confirmation step — no silent guessing on financial data.</div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">Agent 2</div>
+            <div class="pipeline-step-title">Consumption Fetch</div>
+            <div class="pipeline-step-desc">Enedis API call using the PDL number extracted from the bill. Verified consumption data replaces all estimates. Async with explicit loading state to prevent drop-off.</div>
+          </div>
+          <div class="pipeline-step">
+            <div class="pipeline-step-num">Agent 3</div>
+            <div class="pipeline-step-title">Recommendation</div>
+            <div class="pipeline-step-desc">Claude reasons across contract type, real consumption profile, and live market offers. Prompted to explain reasoning per output line — for hallucination mitigation and user trust.</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Product Hypothesis</div>
+        <div class="highlight">
+          <p>"If we replace manual data entry with automated bill extraction and real consumption data, then provider switch rate will exceed 20%, because users act on recommendations grounded in their actual usage rather than estimates."</p>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">UX Integration Approach</div>
+        <p>Explicit copilot pattern. User uploads bill, reviews extracted data, receives a structured recommendation card. AI output is visible and auditable at every step. An invisible agentic flow was considered and rejected — financial context requires user trust, not frictionless automation. Showing the work is the product.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Build vs. Buy</div>
+        <p>Mistral OCR over a custom extractor for format heterogeneity without maintenance overhead. Enedis API over user self-reporting — real data was a non-negotiable given the financial stakes of the recommendation. Claude over a cheaper model for the recommendation step — reasoning quality directly affects switch rate, which is the product's only metric that matters.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <h2 class="section-title">Outcomes & Evidence</h2>
+      </div>
+      <div class="outcomes-grid">
+        <div class="outcome-card">
+          <div class="outcome-card-label">Quantitative</div>
+          <ul class="bullet-list">
+            <li>470 unique users (1 bill per user)</li>
+            <li>82% reached the recommendation screen</li>
+            <li>28% switched provider after recommendation</li>
+            <li>€38/month average saving per switcher (~€456/year)</li>
+            <li>2x+ the ~€214/year market baseline</li>
+          </ul>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-card-label">Quality Signal</div>
+          <ul class="bullet-list">
+            <li>OCR correction rate: 40% at launch</li>
+            <li>OCR correction rate: 6% after prompt iteration</li>
+            <li>Concrete signal of extraction improvement across provider formats</li>
+          </ul>
+        </div>
+        <div class="outcome-card full">
+          <div class="outcome-card-label">Qualitative</div>
+          <p>The shift from estimates to verified consumption data was the trust unlock. Users who had ignored comparison tools for years acted on recommendations because they could see their actual numbers reflected back. Showing the extraction step — rather than hiding it — reduced abandonment and increased confidence in the output.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">06</span>
+        <h2 class="section-title">Hard-Won Lessons</h2>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">The Pivot</div>
+        <p>Mistral OCR performed well on standard EDF and Engie layouts but failed on regional distributor formats — different table structures, multi-column layouts, low-DPI scans. With no eval set, prompt iterations happened reactively in production, one broken format at a time. Most of month 2 was firefighting. Correction rate eventually dropped from 40% to 6%, but the cost was avoidable.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">Ethics & Governance</div>
+        <p>PDL numbers and consumption data are personal data under GDPR. Explicit consent step before any Enedis API call. No model fine-tuning on user data. Bill PDF retention policy post-extraction should be confirmed and enforced before scaling. <span class="placeholder-note">confirm retention policy</span></p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">What I'd Do Differently</div>
+        <p>Build a bill format eval set of 30 to 50 diverse PDFs before writing a single line of OCR prompt. Format variance was discovered in production, the worst place to find it. A structured extraction benchmark upfront would have halved the iteration cycle and prevented month-2 firefighting entirely. Every extraction project should start with a format audit, not end with one.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="footer-text">Louis Duquesne · AI Product Manager</span>
+    <div class="footer-links">
+      <a href="/projects/">← All Projects</a>
+      <a href="/">Home</a>
+      <a href="https://www.linkedin.com/in/louisdqn/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+</body>
+</html>
