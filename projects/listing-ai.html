@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ListingAI, Louis Duquesne</title>
+  <meta name="description" content="One paste generates portal-optimized, culturally-adapted real estate copy across 5 portals, 5 languages, and 4 social channels in under 60 seconds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050505;
+      --surface: #0f0f0f;
+      --surface-2: #161616;
+      --border: rgba(255,255,255,0.07);
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45,212,191,0.12);
+      --purple: #a78bfa;
+      --text: #e8e8e8;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --font-sans: 'Inter', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+    .nav-logo:hover { color: var(--teal); }
+    .nav-back { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--teal); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    .hero { max-width: 860px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+    .hero-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tag { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid var(--border); color: var(--text-muted); }
+    .tag-teal { border-color: rgba(45,212,191,0.3); color: var(--teal); background: var(--teal-dim); }
+    .hero h1 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.25rem; }
+    .hero-value-prop { font-size: 1.125rem; color: var(--text-dim); max-width: 640px; margin-bottom: 2rem; line-height: 1.7; }
+    .hero-attrs { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .attr { display: flex; flex-direction: column; gap: 0.2rem; }
+    .attr-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .attr-value { font-size: 0.9rem; color: var(--text-dim); }
+
+    .metrics-bar { max-width: 860px; margin: 0 auto 5rem; padding: 0 2rem; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .metric { background: var(--surface); padding: 1.75rem; text-align: center; }
+    .metric-value { font-family: var(--font-serif); font-size: 2rem; color: var(--teal); line-height: 1; margin-bottom: 0.4rem; }
+    .metric-label { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+    .content { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+    .section { margin-bottom: 4rem; padding-top: 1rem; }
+    .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .section-number { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; color: var(--teal); text-transform: uppercase; min-width: 28px; }
+    .section-title { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 400; color: var(--text); }
+
+    .subsection { margin-bottom: 1.75rem; }
+    .subsection-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    p { color: var(--text-dim); font-size: 0.9375rem; line-height: 1.75; }
+    p + p { margin-top: 0.75rem; }
+
+    .highlight { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .highlight p { color: var(--text); font-size: 0.9375rem; }
+    .highlight .label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 1rem; }
+    .stack-item { background: var(--surface); padding: 1.25rem; }
+    .stack-item-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .stack-item-value { font-size: 0.875rem; color: var(--text-dim); line-height: 1.5; }
+
+    .layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+    .layer { background: var(--surface); padding: 1.5rem; }
+    .layer-num { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+    .layer-title { font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
+    .layer-badge { display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.6rem; }
+    .layer-badge.probabilistic { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+    .layer-badge.deterministic { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(45,212,191,0.2); }
+    .layer-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.55; }
+
+    .evolution { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+    .evolution-row { display: grid; grid-template-columns: 1fr 1fr 2fr; border-bottom: 1px solid var(--border); }
+    .evolution-row:last-child { border-bottom: none; }
+    .evolution-row.header { background: var(--surface-2); }
+    .evolution-cell { padding: 0.875rem 1.25rem; font-size: 0.8125rem; color: var(--text-dim); }
+    .evolution-row.header .evolution-cell { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+    .score { font-weight: 600; color: var(--text); }
+    .score.best { color: var(--teal); }
+
+    .outcomes-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 1rem; }
+    .outcomes-row { display: grid; grid-template-columns: 1.5fr 1fr; border-bottom: 1px solid var(--border); }
+    .outcomes-row:last-child { border-bottom: none; }
+    .outcomes-row.header { background: var(--surface-2); }
+    .outcomes-cell { padding: 0.875rem 1.25rem; font-size: 0.8125rem; color: var(--text-dim); }
+    .outcomes-row.header .outcomes-cell { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+    .outcomes-cell.val { color: var(--teal); font-weight: 500; }
+
+    .insight-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; }
+    .insight-card-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 0.5rem; }
+
+    .placeholder-note { display: inline-block; font-size: 0.75rem; color: var(--text-muted); background: rgba(167,139,250,0.08); border: 1px dashed rgba(167,139,250,0.3); border-radius: 4px; padding: 0.15rem 0.5rem; margin-left: 0.4rem; vertical-align: middle; }
+
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; max-width: 860px; margin: 0 auto; gap: 1rem; }
+    .footer-text { font-size: 0.8125rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8125rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--teal); }
+
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .layers { grid-template-columns: 1fr; }
+      .evolution-row { grid-template-columns: 1fr 1fr; }
+      .evolution-row .evolution-cell:last-child { display: none; }
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .content { padding: 0 1.25rem 4rem; }
+      .metrics-bar { padding: 0 1.25rem; margin-bottom: 3rem; }
+      footer { padding: 2rem 1.25rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Louis Duquesne</a>
+    <a href="/projects/" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      All projects
+    </a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-meta">
+      <span class="tag tag-teal">Founder</span>
+      <span class="tag">AI Product</span>
+      <span class="tag">PropTech</span>
+      <span class="tag">SaaS</span>
+    </div>
+    <h1>ListingAI: From One Paste to Publish-Ready Copy Across 5 Portals, 5 Languages, 4 Channels</h1>
+    <p class="hero-value-prop">
+      Real estate agents on Spain's Costa Blanca write one generic description per listing and skip 3 to 4 languages entirely. ListingAI generates portal-optimized, culturally-adapted copy across every surface in under 60 seconds.
+    </p>
+    <div class="hero-attrs">
+      <div class="attr">
+        <span class="attr-label">Role</span>
+        <span class="attr-value">Lead PM / Head of AI</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Timeline</span>
+        <span class="attr-value">3 months (Discovery to Post-Launch)</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Market</span>
+        <span class="attr-value">Spanish Real Estate</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Status</span>
+        <span class="attr-value">Production</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics-bar">
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-value">&lt;60s</div>
+        <div class="metric-label">Full generation: 5 portals, 5 languages, 4 social channels</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">€990</div>
+        <div class="metric-label">MRR at 3 months post-launch</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">€0</div>
+        <div class="metric-label">CAC, direct outreach and referral only</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">100%</div>
+        <div class="metric-label">Regression suite pass rate, 0 invented facts</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="content">
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Executive Summary</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Problem</div>
+        <p>Real estate agents on Spain's Costa Blanca spend 20 to 30 minutes writing one generic listing description, paste it unchanged across every portal, and skip French, German, and Dutch entirely. In one of Europe's most international property markets, that means reaching 30 to 40% of the available buyer pool.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Solution</div>
+        <p>A single textarea input triggers 29 parallel API calls, each generating portal-specific, culturally-adapted copy for a distinct portal/language combination. Output is ready to publish in under 60 seconds, with a 100-point quality score and interactive gap-filling to improve it further.</p>
+      </div>
+      <div class="highlight">
+        <div class="label">Bottom Line</div>
+        <p>10 paying agencies at €99/month reached €990 MRR at 3 months post-launch, acquired at zero CAC. The limiting factor is distribution, not the technology or unit economics.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">The Pain Point</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Market Reality</div>
+        <p>The northern Costa Blanca (Jávea, Moraira, Calpe, Benidorm) is one of Europe's most international property markets. Buyers are British, French, German, Dutch, and Belgian, each using different portals with different formatting rules, character limits, and audience expectations. A 10-agent agency producing 20 listings per month writes one generic description in one language, pastes it unchanged everywhere, and skips the rest. That is 7 to 10 hours per month on a task done poorly.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Cost of Inaction</div>
+        <p>Listings that only exist in Spanish and broken English reach 30 to 40% of the international buyer pool. French, German, and Dutch buyers never see them. Listings without English on ThinkSpain are invisible to 100% of that portal's audience. Properties listed in a buyer's native language with portal-optimized formatting receive measurably higher engagement on Idealista and Kyero.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Why AI, Not Templates</div>
+        <p>The structural rules are deterministic, character limits, paragraph orders, legal requirements. The part that breaks template-based approaches is cultural adaptation: a German buyer expects m2, energy certificate, and build year first; a French buyer expects the lifestyle lead; a Dutch buyer wants price per m2. Templates cannot route cultural voice per language per portal. A model with per-language system prompts and per-portal structural constraints can.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Tech Stack</h2>
+      </div>
+      <p>No RAG. No fine-tuning. No vector database. The entire system runs on prompt engineering, few-shot examples, and deterministic post-processing, chosen deliberately: a new failure mode means a regex fix deployed in minutes, not a model retrain deployed in days.</p>
+      <div class="stack-grid">
+        <div class="stack-item">
+          <div class="stack-item-label">Model</div>
+          <div class="stack-item-value">Claude Sonnet 4.6, instruction-following fidelity, multilingual quality (FR/DE), long context for 28 few-shot examples</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Framework</div>
+          <div class="stack-item-value">Next.js 16 App Router, Server Actions, RSC, Vercel Pro for 300s serverless timeout</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Database</div>
+          <div class="stack-item-value">Supabase (Postgres + Auth + RLS), typed client, RLS as primary access control</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Payments</div>
+          <div class="stack-item-value">Stripe, €99/month subscription, webhook-verified, atomic trial decrement</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Concurrency</div>
+          <div class="stack-item-value">p-limit(4), 29 API calls per full generation, controlled parallelism to stay within rate limits</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Eval</div>
+          <div class="stack-item-value">Anthropic Batch API, 50% cheaper than real-time, no rate limits, used for regression testing</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2 class="section-title">Solution & PM Strategy</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Product Hypothesis</div>
+        <div class="highlight">
+          <p>"If we generate per-portal, per-language descriptions with cultural voice routing and deterministic quality gates, agencies will save 90%+ of listing creation time while producing higher-quality output than they could write manually, because cultural adaptation and portal-specific optimization are the failure modes of current agent behaviour, not effort."</p>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Core Challenge</div>
+        <p>Making an LLM write listings is trivial. The challenge was preventing it from adding information. Spanish real estate listings are legal documents. An invented "5-minute walk to the beach" that is actually 15 minutes creates liability. The entire architecture exists to enforce one constraint: every word in the output must trace to a specific fact in the input.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Prompt Architecture: 10 Versions, 3 Rewrites</div>
+        <div class="evolution">
+          <div class="evolution-row header">
+            <div class="evolution-cell">Version</div>
+            <div class="evolution-cell">Avg issues</div>
+            <div class="evolution-cell">What changed</div>
+          </div>
+          <div class="evolution-row">
+            <div class="evolution-cell">v1 (baseline)</div>
+            <div class="evolution-cell"><span class="score">10.3</span></div>
+            <div class="evolution-cell">Generic prompt, no per-portal structure</div>
+          </div>
+          <div class="evolution-row">
+            <div class="evolution-cell">v7 (8 rules)</div>
+            <div class="evolution-cell"><span class="score">5.4</span></div>
+            <div class="evolution-cell">Reactive prohibitions, 30+ sub-rules competing for model attention, diminishing returns</div>
+          </div>
+          <div class="evolution-row">
+            <div class="evolution-cell">v10 (3 rules)</div>
+            <div class="evolution-cell"><span class="score">4.0</span></div>
+            <div class="evolution-cell">Principle-based rewrite: collapsed 8 rules into 3, built around one core constraint</div>
+          </div>
+          <div class="evolution-row">
+            <div class="evolution-cell">v12 + regression</div>
+            <div class="evolution-cell"><span class="score best">1.7 (EN)</span></div>
+            <div class="evolution-cell">Deterministic quality gate + cultural few-shot examples per language</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Three-Layer Quality System</div>
+        <div class="layers">
+          <div class="layer">
+            <div class="layer-num">Layer 1</div>
+            <div class="layer-title">Prompt</div>
+            <div><span class="layer-badge probabilistic">Probabilistic</span></div>
+            <div class="layer-desc">3 rules + cultural voice routing + 28 few-shot examples. Correct roughly 95% of the time.</div>
+          </div>
+          <div class="layer">
+            <div class="layer-num">Layer 2</div>
+            <div class="layer-title">Post-processing</div>
+            <div><span class="layer-badge deterministic">Deterministic</span></div>
+            <div class="layer-desc">4-layer regex pipeline: self-correction strip, advisory block strip, calque fixes, cleanup. Catches the 5% the prompt misses. Zero LLM calls.</div>
+          </div>
+          <div class="layer">
+            <div class="layer-num">Layer 3</div>
+            <div class="layer-title">Regression Suite</div>
+            <div><span class="layer-badge deterministic">Deterministic</span></div>
+            <div class="layer-desc">15 tests validating every output against 3 core rules before it reaches the UI. 100% pass rate is the shipping gate.</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">UX Integration</div>
+        <p>Copilot pattern with agent-controlled output. Single textarea input. Output rendered as a portal-level accordion with language tabs, one description visible at a time, copy button with clipboard integration, inline edit mode. Quality Score (100-point rubric per portal) with interactive gap filling so agents can see missing data and regenerate at a higher score. 40 educational tips displayed during the 15 to 30 second generation loading screen.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <h2 class="section-title">Outcomes & Evidence</h2>
+      </div>
+      <div class="outcomes-table">
+        <div class="outcomes-row header">
+          <div class="outcomes-cell">Metric</div>
+          <div class="outcomes-cell">Result</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">Generation time (5 portals x 5 languages + social)</div>
+          <div class="outcomes-cell val">Under 60 seconds</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">Regression suite pass rate</div>
+          <div class="outcomes-cell val">100%</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">EN audit score (LLM native-speaker review)</div>
+          <div class="outcomes-cell val">1.7 avg issues / listing</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">Languages supported simultaneously</div>
+          <div class="outcomes-cell val">5 (ES, EN, FR, DE, NL)</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">Portals with per-portal optimization</div>
+          <div class="outcomes-cell val">5</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">Social channels</div>
+          <div class="outcomes-cell val">4</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">MRR at 3 months</div>
+          <div class="outcomes-cell val">€990</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">CAC</div>
+          <div class="outcomes-cell val">€0</div>
+        </div>
+        <div class="outcomes-row">
+          <div class="outcomes-cell">Primary variable cost per generation</div>
+          <div class="outcomes-cell val">~€0.01 <span class="placeholder-note">confirm</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">06</span>
+        <h2 class="section-title">Hard-Won Lessons</h2>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">Three Pivots</div>
+        <p><strong style="color:var(--text)">Single prompt for all portals and languages:</strong> scrapped. Produced generic copy that optimized for nothing. Moved to 1 call per portal per language. API cost increased 5 to 10x. Quality justified it at ~€0.01 per generation.</p>
+        <p style="margin-top:0.75rem"><strong style="color:var(--text)">Reactive prohibition patching:</strong> scrapped at v8. 30+ sub-prohibitions competing for model attention, scores oscillating without converging. Principle-based rewrite (3 rules) broke the plateau in one iteration.</p>
+        <p style="margin-top:0.75rem"><strong style="color:var(--text)">LLM reviewer as quality gate:</strong> scrapped. Inconsistent scores across runs on identical outputs. Replaced with deterministic regression suite as the hard gate. LLM reviewer retained for discovery only.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">Ethics & Governance</div>
+        <p>Factual accuracy is the product's core legal constraint. Spanish real estate listings are legal documents. No PII processed: the system ingests property descriptions (public data) and outputs marketing copy. GDPR compliance via architecture: Supabase RLS enforces per-user data isolation. No training on user data, standard Anthropic API data processing terms apply.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">What I'd Do Differently</div>
+        <p>Build the regression suite and audit scripts at v1, not v7. Every prompt change should be gated by a deterministic test suite from day one. Months were spent on subjective quality assessment that a 15-test regression suite would have replaced in one afternoon.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="footer-text">Louis Duquesne · AI Product Manager</span>
+    <div class="footer-links">
+      <a href="/projects/">← All Projects</a>
+      <a href="/">Home</a>
+      <a href="https://www.linkedin.com/in/louisdqn/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+</body>
+</html>
