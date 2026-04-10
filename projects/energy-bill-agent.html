@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Energy Bill Savings Agent — Louis Duquesne</title>
+  <title>Energy Bill Savings Agent | Louis Duquesne</title>
   <meta name="description" content="A three-agent pipeline that extracts bill data via OCR, fetches verified consumption from Enedis, and generates personalized switching recommendations." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -437,7 +437,7 @@
       </div>
       <div class="subsection">
         <div class="subsection-label">The Problem</div>
-        <p>French households overpay on electricity contracts due to opaque billing and no easy way to match real consumption against available market offers. Existing comparison tools require manual data entry and rely on consumption estimates — users input guesses, get generic outputs they don't trust.</p>
+        <p>French households overpay on electricity contracts due to opaque billing and no easy way to match real consumption against available market offers. Existing comparison tools require manual data entry and rely on consumption estimates. Users enter guesses and get generic outputs they don't trust.</p>
       </div>
       <div class="subsection">
         <div class="subsection-label">The Solution</div>
@@ -445,7 +445,7 @@
       </div>
       <div class="highlight">
         <div class="label">Bottom Line</div>
-        <p>28% of users who received a recommendation switched provider, saving an average of €38/month — more than double the market baseline of ~€214/year for a typical household switching from EDF Tarif Bleu.</p>
+        <p>28% of users who received a recommendation switched provider, saving an average of €38/month, more than double the market baseline of ~€214/year for a typical household switching from EDF Tarif Bleu.</p>
       </div>
     </section>
 
@@ -456,15 +456,15 @@
       </div>
       <div class="subsection">
         <div class="subsection-label">Market Reality</div>
-        <p>Existing French comparison platforms (HelloWatt, JeanMarcMorin) require manual data entry and rely on consumption estimates. Users input guesses, receive generic outputs, and don't trust the result enough to act. The information asymmetry between suppliers and households is structural — bills are intentionally complex, and switching friction is high.</p>
+        <p>Existing French comparison platforms (HelloWatt, JeanMarcMorin) require manual data entry and rely on consumption estimates. Users input guesses, receive generic outputs, and don't trust the result enough to act. The information asymmetry between suppliers and households is structural: bills are intentionally complex and switching friction is high.</p>
       </div>
       <div class="subsection">
         <div class="subsection-label">Cost of Inaction</div>
-        <p>Switching from EDF Tarif Bleu to the cheapest available offer saves an average household approximately €214/year on standard consumption (4,770 kWh). Most never switch. The problem is not lack of alternatives — it's lack of a trustworthy, low-effort path to act on them.</p>
+        <p>Switching from EDF Tarif Bleu to the cheapest available offer saves an average household approximately €214/year on standard consumption (4,770 kWh). Most never switch. The problem is not lack of alternatives. It's lack of a trustworthy, low-effort path to act on them.</p>
       </div>
       <div class="subsection">
         <div class="subsection-label">Why AI, Not Heuristics</div>
-        <p>Bill formats vary across providers and change over time. A rules-based extractor breaks on layout updates. Mistral OCR with a structured extraction prompt handles format heterogeneity without per-provider maintenance. The recommendation layer must reason across contract type, consumption profile, and live market offers simultaneously — not reducible to a decision tree.</p>
+        <p>Bill formats vary across providers and change over time. A rules-based extractor breaks on layout updates. Mistral OCR with a structured extraction prompt handles format heterogeneity without per-provider maintenance. The recommendation layer must reason across contract type, consumption profile, and live market offers simultaneously. That's not reducible to a decision tree.</p>
       </div>
     </section>
 
@@ -477,27 +477,27 @@
       <div class="stack-grid">
         <div class="stack-item">
           <div class="stack-item-label">OCR / Extraction</div>
-          <div class="stack-item-value">Mistral OCR — PDF bill extraction across provider formats</div>
+          <div class="stack-item-value">Mistral OCR. Bill extraction across provider formats.</div>
         </div>
         <div class="stack-item">
           <div class="stack-item-label">Analysis & Recommendations</div>
-          <div class="stack-item-value">Claude (Anthropic) — consumption analysis and recommendation generation</div>
+          <div class="stack-item-value">Claude (Anthropic). Consumption analysis and recommendation generation.</div>
         </div>
         <div class="stack-item">
           <div class="stack-item-label">Consumption Data</div>
-          <div class="stack-item-value">Enedis API — verified consumption via PDL number. User self-reporting explicitly ruled out.</div>
+          <div class="stack-item-value">Enedis API for verified consumption via PDL number. User self-reporting ruled out.</div>
         </div>
         <div class="stack-item">
           <div class="stack-item-label">Backend</div>
-          <div class="stack-item-value">FastAPI (Python) — async pipeline with explicit loading states</div>
+          <div class="stack-item-value">FastAPI (Python). Async pipeline with explicit loading states.</div>
         </div>
         <div class="stack-item">
           <div class="stack-item-label">Frontend</div>
-          <div class="stack-item-value">Next.js — bill upload, extraction review, recommendation card</div>
+          <div class="stack-item-value">Next.js. Bill upload, extraction review, recommendation card.</div>
         </div>
         <div class="stack-item">
           <div class="stack-item-label">Data Strategy</div>
-          <div class="stack-item-value">Strict JSON output schemas for extraction reliability. Real data over estimates — deliberate given the financial stakes.</div>
+          <div class="stack-item-value">Strict JSON output schemas for extraction reliability. Real data over estimates, deliberate given the financial stakes.</div>
         </div>
       </div>
     </section>
@@ -513,7 +513,7 @@
           <div class="pipeline-step">
             <div class="pipeline-step-num">Agent 1</div>
             <div class="pipeline-step-title">Bill Extraction</div>
-            <div class="pipeline-step-desc">Mistral OCR parses the uploaded PDF. Outputs a strict JSON schema. Fields below confidence threshold trigger a user confirmation step — no silent guessing on financial data.</div>
+            <div class="pipeline-step-desc">Mistral OCR parses the uploaded PDF. Outputs a strict JSON schema. Fields below confidence threshold trigger a user confirmation step. No silent guessing on financial data.</div>
           </div>
           <div class="pipeline-step">
             <div class="pipeline-step-num">Agent 2</div>
@@ -523,7 +523,7 @@
           <div class="pipeline-step">
             <div class="pipeline-step-num">Agent 3</div>
             <div class="pipeline-step-title">Recommendation</div>
-            <div class="pipeline-step-desc">Claude reasons across contract type, real consumption profile, and live market offers. Prompted to explain reasoning per output line — for hallucination mitigation and user trust.</div>
+            <div class="pipeline-step-desc">Claude reasons across contract type, real consumption profile, and live market offers. Prompted to explain reasoning per output line, for hallucination mitigation and user trust.</div>
           </div>
         </div>
       </div>
@@ -535,11 +535,11 @@
       </div>
       <div class="subsection">
         <div class="subsection-label">UX Integration Approach</div>
-        <p>Explicit copilot pattern. User uploads bill, reviews extracted data, receives a structured recommendation card. AI output is visible and auditable at every step. An invisible agentic flow was considered and rejected — financial context requires user trust, not frictionless automation. Showing the work is the product.</p>
+        <p>Explicit copilot pattern. User uploads bill, reviews extracted data, receives a structured recommendation card. AI output is visible and auditable at every step. An invisible agentic flow was considered and rejected. Financial context requires user trust, not a fully automated black box. Showing the work is the product.</p>
       </div>
       <div class="subsection">
         <div class="subsection-label">Build vs. Buy</div>
-        <p>Mistral OCR over a custom extractor for format heterogeneity without maintenance overhead. Enedis API over user self-reporting — real data was a non-negotiable given the financial stakes of the recommendation. Claude over a cheaper model for the recommendation step — reasoning quality directly affects switch rate, which is the product's only metric that matters.</p>
+        <p>Mistral OCR over a custom extractor for format heterogeneity without maintenance overhead. Enedis API over user self-reporting: real data was non-negotiable given the financial stakes of the recommendation. Claude over a cheaper model for the recommendation step, because reasoning quality directly affects switch rate, which is the only metric that matters.</p>
       </div>
     </section>
 
@@ -569,7 +569,7 @@
         </div>
         <div class="outcome-card full">
           <div class="outcome-card-label">Qualitative</div>
-          <p>The shift from estimates to verified consumption data was the trust unlock. Users who had ignored comparison tools for years acted on recommendations because they could see their actual numbers reflected back. Showing the extraction step — rather than hiding it — reduced abandonment and increased confidence in the output.</p>
+          <p>The shift from estimates to verified consumption data was what built user trust. Users who had ignored comparison tools for years acted on recommendations because they could see their actual numbers reflected back. Showing the extraction step rather than hiding it reduced abandonment and increased confidence in the output.</p>
         </div>
       </div>
     </section>
@@ -581,7 +581,7 @@
       </div>
       <div class="insight-card">
         <div class="insight-card-label">The Pivot</div>
-        <p>Mistral OCR performed well on standard EDF and Engie layouts but failed on regional distributor formats — different table structures, multi-column layouts, low-DPI scans. With no eval set, prompt iterations happened reactively in production, one broken format at a time. Most of month 2 was firefighting. Correction rate eventually dropped from 40% to 6%, but the cost was avoidable.</p>
+        <p>Mistral OCR performed well on standard EDF and Engie layouts but failed on regional distributor formats: different table structures, multi-column layouts, low-DPI scans. With no eval set, prompt iterations happened reactively in production, one broken format at a time. Most of month 2 was firefighting. Correction rate eventually dropped from 40% to 6%, but the cost was avoidable.</p>
       </div>
       <div class="insight-card">
         <div class="insight-card-label">Ethics & Governance</div>
