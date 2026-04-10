@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Dating Chatbot, Louis Duquesne</title>
+  <meta name="description" content="From loss-making to €1.2M ARR in 18 months, rebuilt conversational engine, redesigned monetization stack, €1.2M P&L swing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050505;
+      --surface: #0f0f0f;
+      --surface-2: #161616;
+      --border: rgba(255,255,255,0.07);
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45,212,191,0.12);
+      --purple: #a78bfa;
+      --text: #e8e8e8;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --font-sans: 'Inter', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(5,5,5,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-size: 0.875rem; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+    .nav-logo:hover { color: var(--teal); }
+    .nav-back { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-back:hover { color: var(--teal); }
+    .nav-back svg { width: 14px; height: 14px; }
+
+    .hero { max-width: 860px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+    .hero-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tag { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 999px; border: 1px solid var(--border); color: var(--text-muted); }
+    .tag-teal { border-color: rgba(45,212,191,0.3); color: var(--teal); background: var(--teal-dim); }
+    .hero h1 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 1.25rem; }
+    .hero-value-prop { font-size: 1.125rem; color: var(--text-dim); max-width: 640px; margin-bottom: 2rem; line-height: 1.7; }
+    .hero-attrs { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .attr { display: flex; flex-direction: column; gap: 0.2rem; }
+    .attr-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .attr-value { font-size: 0.9rem; color: var(--text-dim); }
+
+    .metrics-bar { max-width: 860px; margin: 0 auto 5rem; padding: 0 2rem; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .metric { background: var(--surface); padding: 1.75rem; text-align: center; }
+    .metric-value { font-family: var(--font-serif); font-size: 2rem; color: var(--teal); line-height: 1; margin-bottom: 0.4rem; }
+    .metric-label { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+    .content { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+    .section { margin-bottom: 4rem; padding-top: 1rem; }
+    .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .section-number { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; color: var(--teal); text-transform: uppercase; min-width: 28px; }
+    .section-title { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 400; color: var(--text); }
+
+    .subsection { margin-bottom: 1.75rem; }
+    .subsection-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+    p { color: var(--text-dim); font-size: 0.9375rem; line-height: 1.75; }
+    p + p { margin-top: 0.75rem; }
+
+    .highlight { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
+    .highlight p { color: var(--text); font-size: 0.9375rem; }
+    .highlight .label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 1rem; }
+    .stack-item { background: var(--surface); padding: 1.25rem; }
+    .stack-item-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .stack-item-value { font-size: 0.875rem; color: var(--text-dim); line-height: 1.5; }
+
+    /* Monetization ladder */
+    .mono-ladder { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+    .mono-tier { background: var(--surface); padding: 1.5rem; }
+    .mono-tier.highlighted { background: var(--surface-2); border-top: 2px solid var(--teal); }
+    .mono-tier-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .mono-tier-name { font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+    .mono-tier-role { font-size: 0.8125rem; color: var(--teal); margin-bottom: 0.5rem; font-weight: 500; }
+    .mono-tier-desc { font-size: 0.8125rem; color: var(--text-muted); line-height: 1.55; }
+
+    /* P&L swing */
+    .pnl { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+    .pnl-row { display: grid; grid-template-columns: 1fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+    .pnl-row:last-child { border-bottom: none; }
+    .pnl-row.header { background: var(--surface-2); }
+    .pnl-cell { padding: 0.875rem 1.25rem; font-size: 0.8125rem; color: var(--text-dim); }
+    .pnl-row.header .pnl-cell { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+    .pnl-cell.neg { color: #f87171; font-weight: 500; }
+    .pnl-cell.pos { color: var(--teal); font-weight: 500; }
+
+    .outcomes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    .outcome-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+    .outcome-card.full { grid-column: 1 / -1; }
+    .outcome-card-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+    .insight-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; }
+    .insight-card-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 0.5rem; }
+
+    ul.bullet-list { list-style: none; padding: 0; margin-top: 0.5rem; }
+    ul.bullet-list li { padding: 0.35rem 0; padding-left: 1.25rem; position: relative; font-size: 0.9375rem; color: var(--text-dim); line-height: 1.65; }
+    ul.bullet-list li::before { content: '·'; position: absolute; left: 0; color: var(--teal); font-size: 1rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; max-width: 860px; margin: 0 auto; gap: 1rem; }
+    .footer-text { font-size: 0.8125rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.8125rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--teal); }
+
+    @media (max-width: 600px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .mono-ladder { grid-template-columns: 1fr; }
+      .pnl-row { grid-template-columns: 1fr 1fr; }
+      .pnl-row .pnl-cell:last-child { display: none; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .content { padding: 0 1.25rem 4rem; }
+      .metrics-bar { padding: 0 1.25rem; margin-bottom: 3rem; }
+      footer { padding: 2rem 1.25rem; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">Louis Duquesne</a>
+    <a href="/projects/" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      All projects
+    </a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-meta">
+      <span class="tag tag-teal">AI Product</span>
+      <span class="tag">Consumer</span>
+      <span class="tag">Monetization</span>
+      <span class="tag">US Market</span>
+    </div>
+    <h1>AI Dating Chatbot: From Loss-Making to €1.2M ARR in 18 Months</h1>
+    <p class="hero-value-prop">
+      A 120K MAU consumer AI product bleeding €400K/year with no monetization model. Rebuilt the conversational engine via fine-tuning, redesigned matching logic, and shipped a 3-tier monetization stack, validated through A/B testing at every step.
+    </p>
+    <div class="hero-attrs">
+      <div class="attr">
+        <span class="attr-label">Role</span>
+        <span class="attr-value">Lead PM (Strategy + Operations)</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Timeline</span>
+        <span class="attr-value">18 months</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Market</span>
+        <span class="attr-value">United States</span>
+      </div>
+      <div class="attr">
+        <span class="attr-label">Status</span>
+        <span class="attr-value">Shipped</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="metrics-bar">
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-value">€1.2M</div>
+        <div class="metric-label">ARR from zero revenue in 18 months</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">€1.2M</div>
+        <div class="metric-label">P&amp;L swing (−€400K to +€800K)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">+217%</div>
+        <div class="metric-label">MAU growth (120K to 380K)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">€800K</div>
+        <div class="metric-label">Annual profit at 18 months</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="content">
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Executive Summary</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Problem</div>
+        <p>A consumer AI product with 120K MAU was bleeding €400K/year. Conversation flows were repetitive, recommendation quality was low, session depth was declining, and the business ran entirely on ad revenue, structurally insufficient at that scale and too volatile to build on.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Solution</div>
+        <p>Rebuilt the GPT-2-based conversational engine via fine-tuning on a proprietary conversation corpus. Redesigned recommendation and matching logic. Shipped 7 features across a 3-tier monetization ladder, each A/B tested before rollout. Presented pricing strategy to C-suite quarterly.</p>
+      </div>
+      <div class="highlight">
+        <div class="label">Bottom Line</div>
+        <p>€1.2M ARR and €800K annual profit from zero revenue within 18 months, a €1.2M P&amp;L swing. MAU grew from 120K to 380K over the same period. The monetization ladder became a reusable internal framework adopted for future products.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">The Pain Point</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Status Quo</div>
+        <p>The product had meaningful scale but conversation flows were repetitive and recommendation quality was low, driving session depth down. Without session depth, there is no engagement signal, no retention lever, and no monetization surface. The business ran on ad revenue, structurally insufficient at 120K MAU and too volatile to plan around.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Cost of Inaction</div>
+        <p>€400K annual loss on a deteriorating engagement curve. Without intervention, MAU growth would have reversed and the product become unsalvageable for monetization. The window to act was narrowing, declining retention compounds fast in consumer apps.</p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Why AI, Not Heuristics</div>
+        <p>Conversation quality in a dating context requires dynamic, contextually-aware responses that adapt to individual user tone, intent signals, and session history. Rule-based dialogue trees fail non-linearly as user surface area grows, require exponential maintenance, and produce the exact repetitiveness that was killing retention. A fine-tuned generative model was the correct call.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Tech Stack</h2>
+      </div>
+      <div class="stack-grid">
+        <div class="stack-item">
+          <div class="stack-item-label">Model</div>
+          <div class="stack-item-value">GPT-2, fine-tuned on proprietary domain conversation corpus</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Backend</div>
+          <div class="stack-item-value">PHP, existing infrastructure, no rewrite warranted</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Frontend</div>
+          <div class="stack-item-value">Vue.js</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Analytics</div>
+          <div class="stack-item-value">Amplitude, funnel analysis, A/B testing. SQL for pricing cohort analysis.</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Data Strategy</div>
+          <div class="stack-item-value">Fine-tuned on proprietary corpus, off-the-shelf GPT-2 output quality was insufficient for the dating context</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-item-label">Quality Signal</div>
+          <div class="stack-item-value">Session depth as primary online metric for conversation quality, informing fine-tuning iteration cycles</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2 class="section-title">Solution & PM Strategy</h2>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">Product Hypothesis</div>
+        <div class="highlight">
+          <p>"If we improve conversation quality through fine-tuning and introduce a tiered monetization model, then we will increase session depth and convert a meaningful share of free users to paying, because users stay longer when conversations feel non-repetitive, and willingness-to-pay correlates with perceived value per session."</p>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">The Monetization Ladder</div>
+        <p>7 features shipped across 3 tiers. Each tier solves a distinct job: acquisition, activation, and retention. Each validated through A/B testing before rollout.</p>
+        <div class="mono-ladder">
+          <div class="mono-tier">
+            <div class="mono-tier-label">Tier 1</div>
+            <div class="mono-tier-name">Freemium</div>
+            <div class="mono-tier-role">Acquisition</div>
+            <div class="mono-tier-desc">Core conversation access at no cost. Builds the user base and surfaces the product's quality improvement post fine-tuning.</div>
+          </div>
+          <div class="mono-tier highlighted">
+            <div class="mono-tier-label">Tier 2</div>
+            <div class="mono-tier-name">Pay-as-you-go Credits</div>
+            <div class="mono-tier-role">Activation + chargeback fix</div>
+            <div class="mono-tier-desc">Discrete value units. Solved the chargeback problem from the subscription attempt, users pay intentionally, disputes drop. Natural bridge to premium for high-engagement users.</div>
+          </div>
+          <div class="mono-tier">
+            <div class="mono-tier-label">Tier 3</div>
+            <div class="mono-tier-name">Premium Subscription</div>
+            <div class="mono-tier-role">Retention + ARR</div>
+            <div class="mono-tier-desc">For users who have already demonstrated willingness to pay through credits. Recurring revenue on a validated cohort, not cold conversion.</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-label">AI-Specific Decisions</div>
+        <ul class="bullet-list">
+          <li>Fine-tuning over prompting, GPT-2's base capability required domain adaptation to meet the quality bar for a dating context. Prompting alone was insufficient.</li>
+          <li>GPT-2's compact size enabled acceptable inference latency without aggressive optimization, a practical infrastructure advantage at the time.</li>
+          <li>Session depth used as the primary online signal for conversation quality, informing fine-tuning iteration cycles rather than subjective evaluation.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <h2 class="section-title">Outcomes & Evidence</h2>
+      </div>
+      <div class="pnl">
+        <div class="pnl-row header">
+          <div class="pnl-cell">Metric</div>
+          <div class="pnl-cell">Before</div>
+          <div class="pnl-cell">After (18 months)</div>
+        </div>
+        <div class="pnl-row">
+          <div class="pnl-cell">MAU</div>
+          <div class="pnl-cell">120K</div>
+          <div class="pnl-cell pos">380K (+217%)</div>
+        </div>
+        <div class="pnl-row">
+          <div class="pnl-cell">ARR</div>
+          <div class="pnl-cell">€0</div>
+          <div class="pnl-cell pos">€1.2M</div>
+        </div>
+        <div class="pnl-row">
+          <div class="pnl-cell">Annual P&amp;L</div>
+          <div class="pnl-cell neg">−€400K</div>
+          <div class="pnl-cell pos">+€800K</div>
+        </div>
+        <div class="pnl-row">
+          <div class="pnl-cell">P&amp;L swing</div>
+          <div class="pnl-cell"></div>
+          <div class="pnl-cell pos">€1.2M in 18 months</div>
+        </div>
+      </div>
+      <div class="outcomes-grid" style="margin-top:1rem">
+        <div class="outcome-card full">
+          <div class="outcome-card-label">Qualitative</div>
+          <p>The monetization ladder became a repeatable internal framework adopted for future products, a signal that it was structurally sound and not a one-off result. Session depth recovery after fine-tuning was the unlock that made monetization viable: users who stay longer convert.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">06</span>
+        <h2 class="section-title">Hard-Won Lessons</h2>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">Three Failed Models Before One That Worked</div>
+        <p><strong style="color:var(--text)">Ad-only:</strong> structurally fragile and not at the scale where ad revenue covers operating costs. The starting position.</p>
+        <p style="margin-top:0.75rem"><strong style="color:var(--text)">Subscription first:</strong> generated immediate chargeback volume high enough to make it operationally unsustainable, a known failure mode in dating and entertainment apps where buyer's remorse and recurring billing disputes are disproportionately high.</p>
+        <p style="margin-top:0.75rem"><strong style="color:var(--text)">Pay-as-you-go credits:</strong> solved it. Users pay for discrete value units, disputes drop because the transaction is immediate and intentional, and the model scales naturally into premium subscriptions for high-engagement users who have already demonstrated willingness to pay.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">Ethics & Governance</div>
+        <p>US market. CCPA-compliant data handling on conversation logs. Age verification enforced at onboarding given the dating context. Conversation data used for fine-tuning under explicit data processing terms.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-card-label">What I'd Do Differently</div>
+        <p>Define the monetization model earlier, in parallel with product-market fit work, not after. The ad dependency created months of unnecessary burn before the real business model was tested. Earlier pricing experimentation, even at 20K MAU, would have compressed the loss period significantly. Monetization is a product decision, not a business decision that follows product decisions.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="footer-text">Louis Duquesne · AI Product Manager</span>
+    <div class="footer-links">
+      <a href="/projects/">← All Projects</a>
+      <a href="/">Home</a>
+      <a href="https://www.linkedin.com/in/louisdqn/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+</body>
+</html>
