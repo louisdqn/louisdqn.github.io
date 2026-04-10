@@ -829,6 +829,106 @@
     to { opacity: 1; transform: scale(1) translateY(0); }
   }
 
+  /* ── Selected Projects Showcase ── */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .showcase-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .showcase-metric {
+    margin-bottom: 20px;
+  }
+
+  .showcase-value {
+    display: block;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .showcase-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  .showcase-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .showcase-card .project-desc {
+    flex: 1;
+    font-size: 14px;
+  }
+
+  .showcase-card .project-stack {
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  .project-view-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: auto;
+    transition: opacity 0.2s;
+  }
+
+  .project-view-link:hover {
+    opacity: 0.75;
+  }
+
+  .project-view-disabled {
+    color: var(--text-muted);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .project-placeholder {
+    opacity: 0.45;
+  }
+
+  .project-placeholder:hover {
+    transform: none;
+    border-color: var(--border);
+  }
+
+  .section-footer {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .view-all-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .view-all-link:hover {
+    opacity: 0.75;
+  }
+
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .hero {
@@ -906,6 +1006,14 @@
 
     .stack-grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+
+    .showcase-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .showcase-value {
+      font-size: 36px;
     }
   }
 
@@ -1197,6 +1305,64 @@
         <div class="stack-item reveal"><span class="stack-icon"></span> Jira</div>
         <div class="stack-item reveal"><span class="stack-icon"></span> Notion</div>
         <div class="stack-item reveal"><span class="stack-icon"></span> GA4</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selected Projects -->
+  <section id="selected-projects" style="padding: 100px 0;">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">Selected Projects</div>
+        <div class="section-title">Products that <span class="serif">moved the needle.</span></div>
+      </div>
+      <div class="showcase-grid">
+
+        <!-- Card 1: Natural Language Property Search -->
+        <div class="project-card showcase-card reveal">
+          <div class="showcase-metric">
+            <span class="showcase-value">−90%</span>
+            <span class="showcase-label">time-to-shortlist</span>
+          </div>
+          <h3>Natural Language Property Search</h3>
+          <p class="project-desc">Bilingual NLP layer that cut agent shortlisting time from 20 minutes to 2.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+            <span class="project-tag">PropTech</span>
+            <span class="project-tag">NLP</span>
+          </div>
+          <a href="projects/natural-language-search.html" class="project-view-link">View project →</a>
+        </div>
+
+        <!-- Card 2: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 2</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 3: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 3</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+      </div>
+      <div class="section-footer reveal">
+        <a href="projects/" class="view-all-link">View all projects →</a>
       </div>
     </div>
   </section>

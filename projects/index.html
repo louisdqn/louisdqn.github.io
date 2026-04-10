@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Louis Duquesne</title>
+<meta name="description" content="AI products and projects built by Louis Duquesne, Senior AI Product Manager.">
+<meta property="og:title" content="Projects — Louis Duquesne">
+<meta property="og:description" content="AI products and projects built by Louis Duquesne, Senior AI Product Manager.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>L</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --bg: #050505;
+    --bg-subtle: #0a0a0a;
+    --bg-card: #0d0d0d;
+    --bg-card-hover: #141414;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(255,255,255,0.12);
+    --text: #f0f0f0;
+    --text-secondary: #777;
+    --text-muted: #555;
+    --accent: #2dd4bf;
+    --accent-glow: rgba(45, 212, 191, 0.15);
+    --accent-subtle: rgba(45, 212, 191, 0.06);
+    --purple: #a78bfa;
+    --purple-glow: rgba(167, 139, 250, 0.12);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ── Container ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ── Nav ── */
+  .nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 8px;
+    z-index: 100;
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
+  }
+
+  .nav.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  .nav a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: 100px;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  .nav a:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* ── Reveal Animation ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+
+  /* ── Page Header ── */
+  .page-header {
+    padding: 120px 0 64px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .page-title {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    color: var(--text);
+  }
+
+  .page-title .serif {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+
+  .page-sub {
+    font-size: 17px;
+    color: var(--text-secondary);
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── Projects Listing ── */
+  .projects-listing {
+    padding: 64px 0 100px;
+  }
+
+  /* ── Showcase Grid ── */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* ── Project Cards (base from index.html) ── */
+  .project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .project-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .project-tag {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+  }
+
+  /* ── Showcase Card Extensions ── */
+  .showcase-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .showcase-metric {
+    margin-bottom: 20px;
+  }
+
+  .showcase-value {
+    display: block;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .showcase-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  .showcase-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .showcase-card .project-desc {
+    flex: 1;
+    font-size: 14px;
+  }
+
+  .showcase-card .project-stack {
+    margin-top: 16px;
+    margin-bottom: 24px;
+  }
+
+  .project-view-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: auto;
+    transition: opacity 0.2s;
+  }
+
+  .project-view-link:hover {
+    opacity: 0.75;
+  }
+
+  .project-view-disabled {
+    color: var(--text-muted);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .project-placeholder {
+    opacity: 0.45;
+  }
+
+  .project-placeholder:hover {
+    transform: none;
+    border-color: var(--border);
+  }
+
+  /* ── Section Header ── */
+  .section-header {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.2;
+  }
+
+  .serif {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--text-secondary);
+  }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 0;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .footer-left {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.7;
+    transition: color 0.2s, opacity 0.2s;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  .footer-links a svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── WhatsApp Bubble ── */
+  .whatsapp-bubble {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 56px;
+    height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+    z-index: 50;
+    opacity: 0;
+    animation: wa-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s forwards;
+  }
+
+  .whatsapp-bubble:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(37, 211, 102, 0.45);
+  }
+
+  .whatsapp-bubble svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+  }
+
+  @keyframes wa-enter {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 36px;
+    }
+
+    .page-header {
+      padding: 100px 0 48px;
+    }
+
+    .showcase-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-card {
+      padding: 28px;
+    }
+
+    .showcase-value {
+      font-size: 36px;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer-links {
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <a href="../">Home</a>
+    <a href="../#work">What I Do</a>
+    <a href="../#experience">Experience</a>
+    <a href="../#stack">Stack</a>
+    <a href="../#contact">Contact</a>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <div class="page-label reveal">Projects</div>
+      <h1 class="page-title reveal reveal-delay-1">AI products <span class="serif">that shipped.</span></h1>
+      <p class="page-sub reveal reveal-delay-2">A selection of products I've built, led, or shipped — from NLP search layers to multi-agent pipelines.</p>
+    </div>
+  </div>
+
+  <!-- Projects Grid -->
+  <section class="projects-listing">
+    <div class="container">
+      <div class="showcase-grid">
+
+        <!-- Card 1: Natural Language Property Search -->
+        <div class="project-card showcase-card reveal">
+          <div class="showcase-metric">
+            <span class="showcase-value">−90%</span>
+            <span class="showcase-label">time-to-shortlist</span>
+          </div>
+          <h3>Natural Language Property Search</h3>
+          <p class="project-desc">Bilingual NLP layer that cut agent shortlisting time from 20 minutes to 2.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+            <span class="project-tag">PropTech</span>
+            <span class="project-tag">NLP</span>
+          </div>
+          <a href="natural-language-search.html" class="project-view-link">View project →</a>
+        </div>
+
+        <!-- Card 2: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 2</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 3: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 3</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 4: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 4</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 5: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 5</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 6: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 6</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 7: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 7</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+        <!-- Card 8: Placeholder -->
+        <div class="project-card showcase-card reveal project-placeholder">
+          <div class="showcase-metric">
+            <span class="showcase-value">—</span>
+          </div>
+          <h3>Project 8</h3>
+          <p class="project-desc">Coming soon.</p>
+          <div class="project-stack">
+            <span class="project-tag">AI Product</span>
+          </div>
+          <span class="project-view-link project-view-disabled">View project →</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">Louis Duquesne / Barcelona, Spain</div>
+        <div class="footer-links">
+          <a href="https://linkedin.com/in/lduquesne" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://www.malt.es/profile/louisduquesne" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Malt
+          </a>
+          <a href="https://www.collective.work/profile/louis-duquesne" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Collective
+          </a>
+          <a href="https://github.com/louisdqn" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Bubble -->
+  <a href="https://wa.me/34613002376" class="whatsapp-bubble" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    // ── Scroll reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Floating nav ──
+    const nav = document.getElementById('nav');
+    const pageHeader = document.querySelector('.page-header');
+
+    window.addEventListener('scroll', () => {
+      const threshold = (pageHeader?.offsetHeight || 200) * 0.5;
+      if (window.scrollY > threshold) {
+        nav.classList.add('visible');
+      } else {
+        nav.classList.remove('visible');
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
